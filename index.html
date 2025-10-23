@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso de Autenticación Estado de Cuenta</title>
+    <!-- Carga de Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Definición de colores base de Afore Coppel */
+        :root {
+            --color-primary: #0A2B6A; /* Azul Marino */
+            --color-accent: #FFC72C; /* Amarillo */
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        
+        /* Modificación: Las tarjetas ahora son solo separadores de sección, sin interacción */
+        .card-interaction {
+            box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1); /* Sutil sombra */
+            border-radius: 0.75rem; /* rounded-xl */
+            margin-bottom: 1rem;
+            /* Se remueven: cursor: pointer, transition, y :hover */
+        }
+        
+        /* Modificación: El panel de detalles ahora está siempre abierto */
+        .details-panel {
+            overflow: visible;
+            max-height: none;
+            opacity: 1;
+            padding: 1rem; /* Padding se maneja aquí */
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Estilo para el split de las dos rutas */
+        .split-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .split-column {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+        }
+        /* Separador vertical para desktop */
+        .separator-desktop {
+            position: relative;
+        }
+        .separator-desktop::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: -1rem;
+            width: 4px;
+            background-color: var(--color-accent);
+            border-radius: 2px;
+        }
+        
+        /* Asegurar que en móvil el split sea vertical */
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .split-column {
+                width: 100%;
+            }
+            /* Eliminar separador en móvil */
+            .separator-desktop::after {
+                display: none;
+            }
+            /* Añadir un separador horizontal visible en móvil */
+            .split-column:first-child {
+                border-bottom: 4px solid var(--color-accent);
+                padding-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+    <div id="app" class="w-full max-w-5xl mx-auto">
+
+        <!-- LOGO DE AFORE COPPEL --><img 
+            src="afore 2.png" 
+            alt="Logo Afore Coppel" 
+            class="mx-auto w-48 mb-8" 
+            onerror="this.onerror=null;this.src='https://placehold.co/192x40/0A2B6A/FFFFFF?text=Afore+Coppel+Logo';">
+
+        <h1 class="text-3xl md:text-4xl font-extrabold text-center mb-2 text-[--color-primary]">
+            PROCESO DE AUTENTICACIÓN ESTADO DE CUENTA
+        </h1>
+        <p class="text-center text-gray-600 mb-10 text-lg font-semibold">
+            Rutas y acciones detalladas para la emisión del Estado de Cuenta.
+        </p>
+
+        <!-- CONTENEDOR DE DECISIÓN PRINCIPAL (SPLIT) --><div class="split-container">
+            
+            <!-- COLUMNA 1: RUTA TITULAR --><div class="split-column separator-desktop">
+                <div class="w-full text-center p-4 bg-[--color-primary] text-white rounded-xl shadow-lg font-extrabold text-2xl mb-6">
+                    TITULAR
+                </div>
+                
+                <!-- SUB-PASO: VALIDACIÓN 3 PREGUNTAS (DECISIÓN) --><div class="w-full p-4 bg-blue-100 rounded-xl card-interaction border-2 border-[--color-primary] text-center">
+                    <span class="font-bold text-xl text-[--color-primary]">VALIDACIÓN DE IDENTIDAD (3 Preguntas)</span>
+                </div>
+                <div id="titular-auth" class="details-panel bg-blue-50 rounded-xl border-l-4 border-[--color-primary] p-4">
+                    <p class="font-semibold text-[--color-primary] mb-2 text-lg">PREGUNTAS CLAVE (Match):</p>
+                    <ul class="list-disc list-inside text-sm text-gray-700 pl-4 space-y-1">
+                        <li>¿Cuál es su NSS o CURP?</li>
+                        <li>¿Cual es fecha de nacimiento?</li>
+                        <li>¿En que estado de la republica nació?</li>
+                    </ul>
+                </div>
+                
+                <!-- SUB-PASO: TITULAR ÉXITO --><div class="mt-4 w-full">
+                    <div class="p-4 bg-green-500 text-white rounded-xl card-interaction font-extrabold">
+                        <span class="font-bold text-xl">ÉXITO (Respuestas Correctas)</span>
+                    </div>
+                    <div id="auth-success" class="details-panel bg-green-100 rounded-xl border-l-4 border-green-600 p-4">
+                        <p class="font-bold text-green-800 mb-2 text-lg">ACCIÓN REQUERIDA:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 pl-4 space-y-1">
+                            <li>Emitir Estado de Cuenta (EDC) al medio de contacto registrado.</li>
+                        </ul>
+                        <hr class="my-3 border-green-300">
+                        <p class="font-bold text-xs text-green-800">TIPIFICACIÓN:</p>
+                        <p class="font-mono text-base bg-green-300 p-2 rounded-lg">Consulta > Emisión de Estado de Cuenta > Exitosa</p>
+                    </div>
+                </div>
+
+                <!-- SUB-PASO: TITULAR FALLO --><div class="mt-4 w-full">
+                    <div class="p-4 bg-red-500 text-white rounded-xl card-interaction font-extrabold">
+                        <span class="font-bold text-xl">FALLO (Respuestas Incorrectas)</span>
+                    </div>
+                    <div id="auth-failure" class="details-panel bg-red-100 rounded-xl border-l-4 border-red-600 p-4">
+                        <p class="font-bold text-red-800 mb-2 text-lg">ACCIÓN REQUERIDA:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 pl-4 space-y-1">
+                            <li>Informar la imposibilidad por seguridad de datos.</li>
+                            <li>Generar Interacción Cerrada describiendo el fallo de autenticación.</li>
+                        </ul>
+                        <hr class="my-3 border-red-300">
+                        <p class="font-bold text-xs text-red-800">TIPIFICACIÓN:</p>
+                        <p class="font-mono text-base bg-red-300 p-2 rounded-lg">Consulta > Emisión de Estado de Cuenta > No Exitosa</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLUMNA 2: RUTA BENEFICIARIO --><div class="split-column">
+                <div class="w-full text-center p-4 bg-green-600 text-white rounded-xl shadow-lg font-extrabold text-2xl mb-6">
+                    BENEFICIARIO
+                </div>
+                
+                <!-- SUB-PASO: VALIDACIÓN RENAPO (DECISIÓN) --><div class="w-full p-4 bg-yellow-400 text-gray-900 rounded-xl card-interaction border-2 border-yellow-600 text-center">
+                    <span class="font-bold text-xl text-gray-900">VALIDACIÓN EN PORTAL RENAPO (CURP Titular)</span>
+                </div>
+                <div id="renapo-check" class="details-panel bg-yellow-50 rounded-xl border-l-4 border-yellow-600 p-4">
+                    <p class="font-semibold text-yellow-800 mb-3 text-lg">PROCESO PASO A PASO (Ejecutivo CAT):</p>
+                    <ol class="list-decimal list-inside text-sm text-gray-700 pl-4 space-y-2 font-medium">
+                        <li><span class="font-extrabold text-[--color-primary]">Acceder a Portal:</span> Ingresar al portal oficial de consulta CURP de RENAPO.</li>
+                        <li><span class="font-extrabold text-[--color-primary]">Capturar Datos:</span> Colocar el CURP del titular de la cuenta.</li>
+                        <li><span class="font-extrabold text-[--color-primary]">Generar Documento:</span> Dar clic en "Buscar" o "Generar Documento" para obtener el PDF.</li>
+                        <li><span class="font-extrabold text-[--color-primary]">Abrir PDF:</span> Visualizar el documento generado.</li>
+                        <li><span class="font-extrabold text-[--color-primary]">Validar Leyenda:</span> Buscar específicamente la leyenda en mayúsculas: <span class="font-extrabold text-red-700">"BAJA POR DEFUNCIÓN"</span>.</li>
+                        <li><span class="font-extrabold text-[--color-primary]">Tomar Captura:</span> Si la leyenda aparece, tomar una captura de pantalla clara y adjuntar como evidencia en CRM.</li>
+                    </ol>
+                    <p class="mt-3 text-xs text-yellow-700 font-bold"><span class="font-extrabold text-[--color-primary]">El resultado de esta validación</span> define el flujo siguiente.</p>
+                </div>
+
+                <!-- SUB-PASO: TITULAR FALLECIDO --><div class="mt-4 w-full">
+                    <div class="p-4 bg-green-600 text-white rounded-xl card-interaction font-extrabold">
+                        <span class="font-bold text-xl">BAJA POR DEFUNCIÓN (EXITOSA)</span>
+                    </div>
+                    <div id="benef-deceased" class="details-panel bg-green-100 rounded-xl border-l-4 border-green-600 p-4">
+                        <p class="font-bold text-green-800 mb-2 text-lg">ACCIÓN REQUERIDA (CRM Abierta):</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 pl-4 space-y-1">
+                            <li>Generar <span class="font-extrabold text-green-800">Consulta CRM Abierta</span> en SalesForce.</li>
+                            <li>Adjuntar la <span class="font-extrabold text-green-800">CAPTURA DE RENAPO</span> (evidencia de defunción).</li>
+                            <li>Especificar que es una Solicitud de EDC por Beneficiario.</li>
+                        </ul>
+                        <hr class="my-3 border-green-300">
+                        <p class="font-bold text-xs text-green-800">TIPIFICACIÓN:</p>
+                        <p class="font-mono text-base bg-green-300 p-2 rounded-lg">Consulta > Emisión de Estado de Cuenta > Beneficiario /Exitosa</p>
+                    </div>
+                </div>
+                
+                <!-- SUB-PASO: TITULAR ACTIVO --><div class="mt-4 w-full">
+                    <div class="p-4 bg-red-600 text-white rounded-xl card-interaction font-extrabold">
+                        <span class="font-bold text-xl">REGISTRO ACTIVO (NO EXITOSA)</span>
+                    </div>
+                    <div id="benef-alive" class="details-panel bg-red-100 rounded-xl border-l-4 border-red-600 p-4">
+                        <p class="font-bold text-red-800 mb-2 text-lg">ACCIÓN REQUERIDA (Interacción Cerrada):</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 pl-4 space-y-1">
+                            <li>Brindar <span class="font-extrabold text-red-800">Diálogo de Referencia a Módulo</span>:
+                                <div class="mt-2 p-3 bg-white italic text-sm rounded border border-red-300 shadow">
+                                    "Agradecemos su interés. Para poder brindarle el Estado de Cuenta (EDC), y confirmar su registro como beneficiario, es necesario un proceso de validación presencial. Le invitamos a visitar cualquier módulo de Afore Coppel; nuestros asesores previsionales están listos para ayudarle a completar su registro y entregarle su documento de manera oportuna."
+                                </div>
+                            </li>
+                            <li>Generar <span class="font-extrabold text-red-800">Interacción Cerrada</span> describiendo lo sucedido.</li>
+                        </ul>
+                        <hr class="my-3 border-red-300">
+                        <p class="font-bold text-xs text-red-800">TIPIFICACIÓN:</p>
+                        <p class="font-mono text-base bg-red-300 p-2 rounded-lg">Consulta > Emisión de Estado de Cuenta > Beneficiario / No Exitosa</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
